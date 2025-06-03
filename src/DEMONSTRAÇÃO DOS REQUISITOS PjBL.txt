@@ -1,0 +1,229 @@
+# 🎓 DEMONSTRAÇÃO DOS REQUISITOS PjBL
+
+
+🔐 Logins para testar:
+
+Admin: admin@sistema.com / 123456
+Aluno: joao@email.com / 123
+Professor: maria@email.com / 123
+Coordenador: carlos@email.com / 123
+
+
+
+
+## ✅ **COMO MOSTRAR CADA REQUISITO**
+
+### **1️⃣ ENCAPSULAMENTO** 
+**📍 Onde mostrar:** Qualquer classe
+```java
+// Usuario.java - Atributos privados
+private String nome;     // ← ENCAPSULADO
+private String email;    // ← ENCAPSULADO
+
+// Acesso controlado via métodos
+public String getNome() { return nome; }  // ← INTERFACE PÚBLICA
+```
+
+### **2️⃣ MAIS DE 5 CLASSES**
+**📍 Onde mostrar:** Estrutura do projeto
+```
+✅ 9 CLASSES IMPLEMENTADAS:
+1. Usuario.java          (classe abstrata)
+2. Aluno.java           (herança)
+3. Professor.java       (herança) 
+4. Coordenador.java     (herança)
+5. Administrador.java   (herança)
+6. Frequencia.java      (associação)
+7. SerializadorJava.java (persistência)
+8. Excecao.java         (exception)
+9. Main.java            (interface)
+```
+
+### **3️⃣ CLASSE ABSTRATA**
+**📍 Onde mostrar:** Usuario.java linha 15
+```java
+public abstract class Usuario implements Serializable {
+    //         ↑
+    //    CLASSE ABSTRATA - não pode ser instanciada
+```
+
+### **4️⃣ MÉTODOS ABSTRATOS**
+**📍 Onde mostrar:** Usuario.java linhas 50-65
+```java
+// MÉTODOS ABSTRATOS - devem ser implementados pelas subclasses
+public abstract String[] getPermissoes();
+public abstract String getTipoUsuario();
+public abstract boolean podeEditarFrequencia();
+public abstract boolean podeGerenciarUsuarios();
+public abstract String gerarRelatorioPersonalizado();
+```
+
+### **5️⃣ 10+ ATRIBUTOS E MÉTODOS**
+**📍 Onde mostrar:** Qualquer classe
+```java
+// CONTAGEM RÁPIDA:
+Usuario:        8 atributos + 15 métodos
+Aluno:          4 atributos + 12 métodos  
+Professor:      3 atributos + 10 métodos
+Frequencia:     7 atributos + 15 métodos
+// TOTAL: 50+ atributos e 100+ métodos
+```
+
+### **6️⃣ DUAS RELAÇÕES DE HERANÇA**
+**📍 Onde mostrar:** Qualquer subclasse
+```java
+// HERANÇA 1: Usuario → Aluno
+public class Aluno extends Usuario {
+//                     ↑
+//               HERDA DE Usuario
+
+// HERANÇA 2: Usuario → Professor  
+public class Professor extends Usuario {
+//                        ↑
+//                  HERDA DE Usuario
+```
+
+### **7️⃣ MÉTODO SOBRESCRITO**
+**📍 Onde mostrar:** Aluno.java linha 89
+```java
+@Override  // ← ANOTAÇÃO DE SOBRESCRITA
+public String getDescricaoCompleta() {
+    return String.format("Aluno: %s (Mat: %s)...", nome, matricula);
+    //     ↑
+    // IMPLEMENTAÇÃO ESPECÍFICA DO ALUNO
+}
+```
+
+### **8️⃣ CHAMADA POLIMÓRFICA**
+**📍 Onde mostrar:** Console (automático) ou Interface → Relatórios → "Demonstrar Polimorfismo"
+```java
+// MESMO MÉTODO, COMPORTAMENTOS DIFERENTES:
+Usuario usuario1 = new Aluno(...);
+Usuario usuario2 = new Professor(...);
+
+usuario1.getTipoUsuario();  // → "Aluno"
+usuario2.getTipoUsuario();  // → "Professor"
+//       ↑
+//   POLIMORFISMO EM AÇÃO!
+```
+
+### **9️⃣ ASSOCIAÇÃO ENTRE CLASSES**
+**📍 Onde mostrar:** Frequencia.java linhas 25-30
+```java
+public class Frequencia {
+    private int alunoId;        // ← ASSOCIAÇÃO com Usuario
+    private int registradoPorId; // ← ASSOCIAÇÃO com Usuario
+    //          ↑
+    //    RELACIONAMENTO ENTRE CLASSES
+}
+```
+
+### **🔟 COLEÇÃO DE OBJETOS**
+**📍 Onde mostrar:** Qualquer lugar que use List
+```java
+// SerializadorJava.java
+List<Usuario> usuarios = new ArrayList<>();     // ← COLEÇÃO
+List<Frequencia> frequencias = new ArrayList<>(); // ← COLEÇÃO
+
+// Operações com coleções
+usuarios.stream().filter(u -> u instanceof Aluno).count();
+```
+
+### **1️⃣1️⃣ EXCEPTION CUSTOMIZADA**
+**📍 Onde mostrar:** Excecao.java ou Interface → Sistema → "Testar Exceções"
+```java
+// EXCEPTION DERIVADA DE Exception
+public class Excecao extends Exception {
+//                      ↑
+//            HERDA DE Exception
+
+// MÉTODOS ESPECÍFICOS
+public static Excecao administradorUnico(String nome) {
+    return new Excecao("Administrador", nome, "último admin");
+}
+```
+
+### **1️⃣2️⃣ INTERFACE GRÁFICA**
+**📍 Onde mostrar:** Executar Main.java
+```java
+// SWING COMPLETO:
+✅ Tela de Login
+✅ Tela do Aluno (específica)
+✅ Tela do Professor (específica)  
+✅ Tela do Admin (específica)
+✅ Funcionalidades por perfil
+```
+
+### **1️⃣3️⃣ LEITURA DE CSV**
+**📍 Onde mostrar:** SerializadorJava.java linha 145 ou pasta "dados"
+```java
+// MÉTODO QUE LÊ CSV
+private List<Usuario> carregarUsuariosCSV() throws Exception {
+    try (BufferedReader reader = new BufferedReader(new FileReader(arquivoCSV))) {
+        String linha = reader.readLine(); // Cabeçalho
+        while ((linha = reader.readLine()) != null) {
+            // PROCESSA LINHA DO CSV
+        }
+    }
+}
+
+// ARQUIVOS CRIADOS:
+dados/usuarios.csv     ← ARQUIVO CSV LEGÍVEL
+dados/frequencias.csv  ← ARQUIVO CSV LEGÍVEL
+```
+
+### **1️⃣4️⃣ OBJETOS PERSISTENTES**
+**📍 Onde mostrar:** SerializadorJava.java linha 45 ou pasta "dados"
+```java
+// SERIALIZAÇÃO BINÁRIA
+try (ObjectOutputStream oos = new ObjectOutputStream(...)) {
+    oos.writeObject(usuarios); // ← SALVA OBJETOS COMPLETOS
+}
+
+// ARQUIVOS CRIADOS:
+dados/usuarios.dat     ← SERIALIZAÇÃO BINÁRIA
+dados/frequencias.dat  ← SERIALIZAÇÃO BINÁRIA
+```
+
+## 🎯 **ROTEIRO DE APRESENTAÇÃO (5 MIN)**
+
+### **1. Mostrar Interface (1 min)**
+- Executar Main.java
+- Login com admin@sistema.com / 123456
+- Navegar pelas abas mostrando funcionalidades
+
+### **2. Demonstrar Polimorfismo (1 min)**
+- Aba "Relatórios" → "Demonstrar Polimorfismo"
+- Explicar como mesmo método tem comportamentos diferentes
+
+### **3. Mostrar Exceções (1 min)**
+- Aba "Sistema" → "Testar Exceções"
+- Tentar excluir admin para mostrar exceção customizada
+
+### **4. Verificar Requisitos (1 min)**
+- Aba "Sistema" → "Verificar Requisitos"
+- Mostrar que todos os 14 estão ✅ ATENDIDOS
+
+### **5. Mostrar Arquivos (1 min)**
+- Abrir pasta "dados" criada automaticamente
+- Mostrar .dat (binário) e .csv (legível)
+- Abrir .csv no bloco de notas
+
+## 💡 **DICAS PARA APRESENTAÇÃO**
+
+### **✅ PONTOS FORTES PARA DESTACAR:**
+- **Todos os 14 requisitos implementados**
+- **Interface profissional e funcional**
+- **Demonstração automática dos conceitos**
+- **Código bem estruturado e comentado**
+- **Persistência robusta (binário + CSV)**
+
+### **🎯 SE PERGUNTAREM:**
+- **"Onde está o polimorfismo?"** → Console + Interface → Relatórios
+- **"Como funciona a herança?"** → Usuario → 4 subclasses
+- **"Qual é a exceção customizada?"** → Excecao.java + demonstração
+- **"Onde estão os dados persistentes?"** → Pasta dados/ 
+- **"Como funciona o CSV?"** → Abrir dados/usuarios.csv
+
+### **🏆 FRASE FINAL:**
+*"Este projeto demonstra todos os conceitos fundamentais de POO de forma prática e visual, em uma aplicação real e funcional."*

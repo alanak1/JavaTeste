@@ -1,0 +1,4 @@
+ID;AlunoID;Disciplina;Data;Presente;Observacao;RegistradoPorID
+1748626760882;2;Programação I;2025-05-29;true;Presente na aula teórica;3
+1748626760882;2;Programação I;2025-05-28;false;Falta justificada - atestado médico;3
+1748626760882;2;Algoritmos;2025-05-30;true;Participou ativamente da aula;3

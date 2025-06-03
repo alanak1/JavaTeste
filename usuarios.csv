@@ -1,0 +1,5 @@
+Tipo;ID;Nome;Email;CPF;Extra01;Extra02;Extra03
+Aluno;1;Ana Costa;ana@exemplo.com;33333333333;20241001;Engenharia;1
+Professor;2;Dr. Carlos;carlos@exemplo.com;44444444444;Exatas;Doutor
+Administrador;3;Lucia Admin;lucia@exemplo.com;55555555555;TOTAL
+Coordenador;4;João Silva;joao@exemplo.com;66666666666;Ciência da Computação

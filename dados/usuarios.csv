@@ -1,0 +1,7 @@
+ID;Nome;Email;TipoUsuario;Ativo;DadosEspecificos
+1;Admin Sistema;admin@sistema.com;Administrador;true;NivelAcesso:TOTAL
+2;João Silva;joao@email.com;Aluno;true;Matricula:20231001,Curso:Ciência da Computação,Semestre:3
+3;Maria Santos;maria@email.com;Professor;true;Departamento:Computação,Titulacao:Mestre
+4;Carlos Lima;carlos@email.com;Coordenador;true;Curso:Ciência da Computação
+1748630761676;Carla;carla@gmail.com;Professor;true;Departamento:Algebra,Titulacao:Mestre
+1748630807023;Eva Maria;eva@gmail.com;Aluno;true;Matricula:3124124215,Curso:Curso Padrão,Semestre:2
