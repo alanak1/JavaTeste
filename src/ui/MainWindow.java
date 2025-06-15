@@ -14,7 +14,8 @@ import models.Usuario;
  * o “ContentPanel” (no centro, com CardLayout) e a “StatusBar” (na parte inferior).
  */
 public class MainWindow extends JFrame {
-        private final ContentPanel contentPanel;
+    private final SideMenuPanel sidePanel;
+    private final ContentPanel contentPanel;
     private final StatusBar statusBar;
     private final Sistema sistema;
     private final Usuario usuarioLogado;
