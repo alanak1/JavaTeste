@@ -1,17 +1,15 @@
 package ui;
 
-import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-
-import models.Sistema;
-import models.Frequencia;
-import models.Usuario;
-import models.Aluno;
-import models.Professor;
+import javax.swing.*;
 import models.Administrador;
+import models.Aluno;
+import models.Frequencia;
+import models.Professor;
+import models.Sistema;
+import models.Usuario;
 import persistencia.SistemaException;
 
 /**
@@ -161,9 +159,9 @@ public class ContentPanel extends JPanel {
                     return;
                 }
 
-                // 4) Encontra o Aluno pela lista de usuários
+                           // 4) Encontra o Aluno pela lista de usuários
                 Aluno chosenAluno = null;
-                for (Usuario u : sistema.getUsuarios()) {
+                for (Usuario u : sistema.listarUsuarios()) {
                     if (u instanceof Aluno st && st.getId() == alunoId) {
                         chosenAluno = st;
                         break;
@@ -201,7 +199,7 @@ public class ContentPanel extends JPanel {
                 boolean isPresent = txtPresent.getText().trim().equalsIgnoreCase("s");
 
                 // 8) Gera ID da frequência (tamanho atual + 1)
-                int newId = sistema.getFrequencias().size() + 1;
+                int newId = sistema.listarFrequencias().size() + 1;
 
                 // 9) Cria o objeto Frequencia e adiciona via adicionarFrequencia()
                 Frequencia f = new Frequencia(
@@ -257,7 +255,7 @@ public class ContentPanel extends JPanel {
         // Monta relatório geral de todos os usuários
         StringBuilder sb = new StringBuilder();
         sb.append("--- Relatório Geral de Usuários ---\n\n");
-        for (Usuario u : sistema.getUsuarios()) {
+        for (Usuario u : sistema.listarUsuarios()) {
             sb.append(u.toString()).append("\n");
         }
         textArea.setText(sb.toString());

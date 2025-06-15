@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import persistencia.SistemaException;
 
 /**
@@ -114,9 +113,9 @@ public class Sistema {
     /**
      * Remove frequência pelo ID. Lança SistemaException se não encontrar.
      */
-    public void removerFrequenciaPorId(long id) throws SistemaException {
+    public void removerFrequenciaPorId(int id) throws SistemaException {
         Frequencia f = frequencias.stream()
-                .filter(x -> x.getId().longValue() == id)
+                .filter(x -> x.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> SistemaException.frequenciaNaoEncontrada(id));
         frequencias.remove(f);
@@ -151,7 +150,7 @@ public class Sistema {
 
     // ====== PERSISTÊNCIA EM BINÁRIO (Serializable) ======
 
-    private void salvarUsuarios() {
+    public void salvarUsuarios() {
         try (ObjectOutputStream oos = new ObjectOutputStream(
                 new FileOutputStream(ARQUIVO_USUARIOS))) {
             oos.writeObject(usuarios);
@@ -180,7 +179,7 @@ public class Sistema {
         }
     }
 
-    private void salvarFrequencias() {
+    public void salvarFrequencias() {
         try (ObjectOutputStream oos = new ObjectOutputStream(
                 new FileOutputStream(ARQUIVO_FREQUENCIAS))) {
             oos.writeObject(frequencias);
@@ -339,14 +338,14 @@ public class Sistema {
                     "Ciência da Computação"));
 
             adicionarFrequencia(new Frequencia(
-                    1L,
+                    1,
                     "20241001",
                     "Programação I",
                     LocalDate.now(),
                     true,
                     "44444444444"));
             adicionarFrequencia(new Frequencia(
-                    2L,
+                    2,
                     "20241001",
                     "Algoritmos",
                     LocalDate.now().minusDays(1),

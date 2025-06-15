@@ -34,12 +34,20 @@ public class SistemaException extends Exception implements Serializable {
         return codigoErro;
     }
 
+
     /**
      * Retorna a mensagem completa em formato legível.
      */
     public String getMensagemFormatada() {
         return String.format("Entidade: %s | ID/Campo: %s | Erro: %s",
                 tipoEntidade, identificador, codigoErro);
+    }
+
+    /**
+     * Método para compatibilidade com o código que espera getDetalhesErro()
+     */
+    public String getDetalhesErro() {
+        return getMensagemFormatada();
     }
 
     // ======= Métodos estáticos “factory” para criar exceções comuns =======

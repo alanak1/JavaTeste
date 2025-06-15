@@ -5,6 +5,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
 import models.Sistema;
+import models.Usuario;
 
 /**
  * MainWindow.java
@@ -13,23 +14,22 @@ import models.Sistema;
  * o “ContentPanel” (no centro, com CardLayout) e a “StatusBar” (na parte inferior).
  */
 public class MainWindow extends JFrame {
-    private final SideMenuPanel sidePanel;
-    private final ContentPanel contentPanel;
+        private final ContentPanel contentPanel;
     private final StatusBar statusBar;
     private final Sistema sistema;
-
+    private final Usuario usuarioLogado;
+    
+    // Construtor vazio para testes (usa o primeiro usuário como padrão)
     public MainWindow() {
-        super("Meu Sistema de Frequência");
+        this(null);
+    }
 
+    public MainWindow(Usuario usuarioLogado) {
+        super("Sistema de Frequência - " + (usuarioLogado != null ? usuarioLogado.getNome() : "Não logado"));
+        
+        this.usuarioLogado = usuarioLogado;
         // 1) Inicializa o sistema e carrega dados iniciais
-        this.sistema = new Sistema();                    // em Sistema(): chamar carregarDados() e criarDadosIniciais()
-/*        // (Se quiser evitar exceções não-verificadas aqui, pode envolver em try/catch.)
-        try {
-            this.sistema.criarDadosIniciais();           // chamar criarDadosIniciais() manualmente, caso queira
-        } catch (Exception ignore) {
-            // caso já existam dados, não faz nada
-        }
-            */
+        this.sistema = new Sistema();
 
         // 2) Configurações principais da JFrame
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
