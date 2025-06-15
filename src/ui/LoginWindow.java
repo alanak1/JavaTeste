@@ -45,11 +45,13 @@ public class LoginWindow extends JFrame {
         btnLogin.setForeground(Color.WHITE);
         btnLogin.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnLogin.setFocusPainted(false);
-        
+        btnLogin.setBorder(BorderFactory.createLineBorder(new Color(100, 149, 237)));
+
         btnCancelar.setBackground(new Color(220, 53, 69));
         btnCancelar.setForeground(Color.WHITE);
         btnCancelar.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnCancelar.setFocusPainted(false);
+        btnCancelar.setBorder(BorderFactory.createLineBorder(new Color(220, 53, 69)));
     }
     
     private void setupLayout() {
