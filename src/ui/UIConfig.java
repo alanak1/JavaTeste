@@ -41,6 +41,6 @@ public class UIConfig {
      */
     public static void aplicarTamanhoPadrao(JFrame frame) {
         frame.setSize(LARGURA_PADRAO, ALTURA_PADRAO);
-        frame.setLocationRelativeTo(null); // centraliza
+        frame.setLocationRelativeTo(null);
     }
 }
