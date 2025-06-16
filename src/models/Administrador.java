@@ -24,12 +24,8 @@ public class Administrador extends Usuario {
      * Construtor que será usado em Sistema.criarDadosIniciais(…):
      * (int id, String nome, String email, String cpf, String nivelAcesso)
      */
-    public Administrador(int id,
-            String nome,
-            String email,
-            String cpf,
-            String nivelAcesso) {
-        super(id, nome, email, cpf);
+    public Administrador(int id, String nome, String email, String cpf, String senha, String nivelAcesso) {
+        super(id, nome, email, cpf, senha);
         this.nivelAcesso = nivelAcesso;
     }
 

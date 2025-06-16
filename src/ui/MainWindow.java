@@ -1,6 +1,8 @@
 package ui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
@@ -10,8 +12,8 @@ import models.Usuario;
 /**
  * MainWindow.java
  *
- * Janela principal que reúne o “SideMenuPanel” (à esquerda),
- * o “ContentPanel” (no centro, com CardLayout) e a “StatusBar” (na parte inferior).
+ * Janela principal que reúne o "SideMenuPanel" (à esquerda),
+ * o "ContentPanel" (no centro, com CardLayout) e a "StatusBar" (na parte inferior).
  */
 public class MainWindow extends JFrame {
     private final SideMenuPanel sidePanel;
@@ -41,11 +43,16 @@ public class MainWindow extends JFrame {
         // 3) Cria cada painel e adiciona à BorderLayout
         sidePanel    = new SideMenuPanel();
         contentPanel = new ContentPanel(sistema);
+        contentPanel.setUsuarioLogado(usuarioLogado);  // Passa o usuário logado
         statusBar    = new StatusBar();
 
         add(sidePanel,    BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
         add(statusBar,    BorderLayout.SOUTH);
+        
+        // Atualizar status bar com informações do usuário
+        statusBar.setStatus("Logado como: " + usuarioLogado.getNome() + 
+                          " (" + usuarioLogado.getTipoUsuario() + ")");
 
         // 4) Intercepta o fechamento para confirmar com o usuário
         addWindowListener(new WindowAdapter() {
@@ -56,23 +63,66 @@ public class MainWindow extends JFrame {
         });
 
         // 5) Configurar ações dos botões laterais
-        sidePanel.getBtnHome().addActionListener(e -> {
-            contentPanel.showCard("HOME");
-            statusBar.setStatus("Página Inicial");
+        sidePanel.getBtnHome().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contentPanel.showCard("HOME");
+                statusBar.setStatus("Página Inicial");
+            }
         });
-        sidePanel.getBtnRegistro().addActionListener(e -> {
-            contentPanel.showCard("REGISTRO");
-            statusBar.setStatus("Registrar Frequência");
+        
+        sidePanel.getBtnRegistro().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contentPanel.showCard("REGISTRO");
+                statusBar.setStatus("Registrar Frequência");
+            }
         });
-        sidePanel.getBtnRelatorio().addActionListener(e -> {
-            contentPanel.showCard("RELATORIO");
-            statusBar.setStatus("Relatório de Usuários");
+        
+        sidePanel.getBtnRelatorio().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contentPanel.showCard("RELATORIO");
+                statusBar.setStatus("Relatório de Usuários");
+            }
         });
-        sidePanel.getBtnConfig().addActionListener(e -> {
-            contentPanel.showCard("CONFIG");
-            statusBar.setStatus("Configurações");
+        
+        sidePanel.getBtnConfig().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contentPanel.showCard("CONFIG");
+                statusBar.setStatus("Configurações");
+            }
         });
-        sidePanel.getBtnSair().addActionListener(e -> exitProcedure());
+        
+        sidePanel.getBtnLogout().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int resp = JOptionPane.showConfirmDialog(
+                    MainWindow.this,
+                    "Deseja fazer logout?",
+                    "Confirmação",
+                    JOptionPane.YES_NO_OPTION
+                );
+                if (resp == JOptionPane.YES_OPTION) {
+                    // Salvar estado antes de fazer logout
+                    MainWindow.this.dispose();
+                    javax.swing.SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            new ui.LoginWindow().setVisible(true);
+                        }
+                    });
+                }
+            }
+        });
+        
+        sidePanel.getBtnSair().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exitProcedure();
+            }
+        });
 
         // 6) Exibe a janela
         setVisible(true);
@@ -92,8 +142,8 @@ public class MainWindow extends JFrame {
         if (resp == JOptionPane.YES_OPTION) {
             // Salvar estado antes de sair (serialização)
             try {
-                sistema.salvarUsuarios();     // grava usuarios em “usuarios.dat”
-                sistema.salvarFrequencias();  // grava frequências em “frequencias.dat”
+                sistema.salvarUsuarios();     // grava usuarios em "usuarios.dat"
+                sistema.salvarFrequencias();  // grava frequências em "frequencias.dat"
             } catch (Exception ex) {
                 // caso deseje exibir erro: JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }

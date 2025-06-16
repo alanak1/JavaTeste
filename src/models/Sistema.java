@@ -5,10 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import persistencia.SerializadorJava;
 import persistencia.SistemaException;
 
 /**
@@ -16,19 +16,13 @@ import persistencia.SistemaException;
  * • Gerencia listas de Usuários e de Frequências
  * • Lança e trata SistemaException
  * • Faz persistência (Serializable) em .dat
- * • Geração e leitura de CSV (via SerializadorJava, se desejado)
- * 
- * Ajustes principais:
- * - getUsuarios() → listarUsuarios()
- * - getFrequencias() → listarFrequencias()
- * 
- * Dessa forma, o ContentPanel e o MainWindow que invocam
- * sistema.listarUsuarios() e sistema.listarFrequencias() compilarão sem erros.
+ * • Geração e leitura de CSV (via SerializadorJava)
  */
 public class Sistema {
     // ===== COLEÇÕES DE OBJETOS =====
     private List<Usuario> usuarios = new ArrayList<>();
     private List<Frequencia> frequencias = new ArrayList<>();
+    private SerializadorJava serializador = new SerializadorJava();
 
     // Arquivos para persistência binária
     private static final String ARQUIVO_USUARIOS = "usuarios.dat";
@@ -90,7 +84,6 @@ public class Sistema {
 
     /**
      * Retorna a lista atual de usuários (cópia defensiva).
-     * Renomeado para listarUsuarios() para integração direta com ContentPanel.
      */
     public List<Usuario> listarUsuarios() {
         return new ArrayList<>(usuarios);
@@ -142,7 +135,6 @@ public class Sistema {
 
     /**
      * Retorna a lista atual de frequências (cópia defensiva).
-     * Renomeado para listarFrequencias() para integração direta com ContentPanel.
      */
     public List<Frequencia> listarFrequencias() {
         return new ArrayList<>(frequencias);
@@ -164,7 +156,6 @@ public class Sistema {
     private void carregarUsuarios() {
         File arquivo = new File(ARQUIVO_USUARIOS);
         if (!arquivo.exists()) {
-            // Não existe ainda, continua com lista vazia
             usuarios = new ArrayList<>();
             return;
         }
@@ -207,27 +198,21 @@ public class Sistema {
         }
     }
 
-    // ====== GERAÇÃO E LEITURA DE CSV (via SerializadorJava, se desejado) ======
+    // ====== GERAÇÃO E LEITURA DE CSV (via SerializadorJava) ======
 
     /**
-     * Gera um CSV de exemplo “dados.csv” para testar a importação via
-     * lerDadosCSV().
-     * (O próprio SerializadorJava fará o parsing e a criação de objetos no
-     * sistema.)
+     * Gera um CSV de exemplo “dados.csv” para testar a importação via lerDadosCSV().
      */
     public void criarArquivoCSVExemplo() {
-        // Aqui você pode delegar tudo para SerializadorJava, se quiser:
-        // serializador.criarCSVExemplo();
-        // Por hora, deixei comentário, pois depende de SerializadorJava
+        serializador.criarCSVExemplo();
     }
 
     /**
      * Lê o CSV (“dados.csv”) e importa usuários e frequências para as listas.
-     * (caso implementado em SerializadorJava)
      */
     public void lerDadosCSV() {
-        // serializador.carregarUsuariosCSV(usuarios);
-        // serializador.carregarFrequenciasCSV(frequencias);
+        serializador.carregarUsuariosCSV(usuarios);
+        serializador.carregarFrequenciasCSV(frequencias);
     }
 
     /**
@@ -236,8 +221,8 @@ public class Sistema {
      * • frequencias.csv
      */
     public void exportarParaCSV() {
-        // serializador.salvarUsuariosCSV(usuarios);
-        // serializador.salvarFrequenciasCSV(frequencias);
+        serializador.salvarUsuariosCSV(usuarios);
+        serializador.salvarFrequenciasCSV(frequencias);
     }
 
     // ====== DEMONSTRAÇÃO DE POLIMORFISMO (opcional) ======
@@ -294,67 +279,36 @@ public class Sistema {
     /**
      * Cria alguns usuários e frequências para testar rapidamente.
      * Se dados já existirem (carregados do .dat), este método não altera nada.
-     * 
-     * Exemplo:
-     * adicionarUsuario(new Aluno(...));
-     * adicionarUsuario(new Professor(...));
-     * adicionarUsuario(new Administrador(...));
-     * adicionarUsuario(new Coordenador(...));
-     * adicionarFrequencia(new Frequencia(...));
      */
-    public void criarDadosIniciais() {
-        if (!usuarios.isEmpty() || !frequencias.isEmpty()) {
-            // Se já houver algo carregado, não sobrescreve
-            return;
-        }
-        try {
-            System.out.println("🔧 Criando dados iniciais...");
-            adicionarUsuario(new Aluno(
-                    1,
-                    "Ana Costa",
-                    "ana@exemplo.com",
-                    "33333333333",
-                    "20241001",
-                    "Engenharia",
-                    1));
-            adicionarUsuario(new Professor(
-                    2,
-                    "Dr. Carlos",
-                    "carlos@exemplo.com",
-                    "44444444444",
-                    "Exatas",
-                    "Doutor"));
-            adicionarUsuario(new Administrador(
-                    3,
-                    "Lucia Admin",
-                    "lucia@exemplo.com",
-                    "55555555555",
-                    "TOTAL"));
-            adicionarUsuario(new Coordenador(
-                    4,
-                    "João Silva",
-                    "joao@exemplo.com",
-                    "66666666666",
-                    "Ciência da Computação"));
+public void criarDadosIniciais() {
+    if (!usuarios.isEmpty()) {
+        // Se já houver usuário cadastrado, não faz nada
+        return;
+    }
+    try {
+        System.out.println("🔧 Criando Administrador inicial...");
+        adicionarUsuario(new Administrador(
+                1,
+                "Administrador",
+                "admin@exemplo.com",
+                "123456789",
+                "123456789",    // senha
+                "TOTAL"          // nível de acesso
+        ));
+        System.out.println("✅ Administrador inicial criado!");
+    } catch (SistemaException e) {
+        System.err.println("❌ Erro ao criar Administrador inicial: " + e.getDetalhesErro());
+    }
+}
 
-            adicionarFrequencia(new Frequencia(
-                    1,
-                    "20241001",
-                    "Programação I",
-                    LocalDate.now(),
-                    true,
-                    "44444444444"));
-            adicionarFrequencia(new Frequencia(
-                    2,
-                    "20241001",
-                    "Algoritmos",
-                    LocalDate.now().minusDays(1),
-                    false,
-                    "44444444444"));
+    // ====== AUTENTICAÇÃO ======
 
-            System.out.println("✅ Dados iniciais criados!");
-        } catch (SistemaException e) {
-            System.err.println("❌ Erro ao criar dados iniciais: " + e.getDetalhesErro());
+    public Usuario autenticarUsuario(String email, String senha) {
+        for (Usuario u : usuarios) {
+            if (u.getEmail().equalsIgnoreCase(email) && u.getSenha().equals(senha)) {
+                return u;
+            }
         }
+        return null;
     }
 }

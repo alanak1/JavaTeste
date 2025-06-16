@@ -32,13 +32,12 @@ public class Professor extends Usuario {
      * @param area        área de atuação
      * @param titulacao   titulação acadêmica
      */
-    public Professor(int id, String nome, String email, String cpf, String area, String titulacao) {
-        super(id, nome, email, cpf);
-        this.area = area;
-        this.titulacao = titulacao;
-        this.disciplinas = new ArrayList<>();
-    }
-
+    public Professor(int id, String nome, String email, String cpf, String senha, String area, String titulacao) {
+    super(id, nome, email, cpf, senha);
+    this.area = area;
+    this.titulacao = titulacao;
+    this.disciplinas = new ArrayList<>();
+}
     // ======= Implementação dos métodos abstratos de Usuario =======
     @Override
     public String getTipoUsuario() {

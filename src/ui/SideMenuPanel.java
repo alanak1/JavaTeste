@@ -1,7 +1,7 @@
 package ui;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 /**
  * SideMenuPanel.java
@@ -11,6 +11,7 @@ import java.awt.*;
  * - Registrar Frequência
  * - Relatórios
  * - Configurações
+ * - Logout
  * - Sair
  *
  * Cada botão terá cor de fundo e fonte ajustadas.
@@ -20,10 +21,11 @@ public class SideMenuPanel extends JPanel {
     private JButton btnRegistro;
     private JButton btnRelatorio;
     private JButton btnConfig;
+    private JButton btnLogout;
     private JButton btnSair;
 
     public SideMenuPanel() {
-        setLayout(new GridLayout(5, 1, 5, 5));
+        setLayout(new GridLayout(6, 1, 5, 5));
         setPreferredSize(new Dimension(200, 0));
         setBackground(new Color(240, 240, 240)); // cinza claro
 
@@ -38,6 +40,9 @@ public class SideMenuPanel extends JPanel {
 
         btnConfig = new JButton("Configurações");
         styleNavButton(btnConfig, new Color(100, 149, 237)); // Cornflower Blue
+        
+        btnLogout = new JButton("Logout");
+        styleNavButton(btnLogout, new Color(255, 140, 0)); // Dark Orange
 
         btnSair = new JButton("Sair");
         styleNavButton(btnSair, new Color(220, 53, 69)); // Vermelho tomate
@@ -46,6 +51,7 @@ public class SideMenuPanel extends JPanel {
         add(btnRegistro);
         add(btnRelatorio);
         add(btnConfig);
+        add(btnLogout);
         add(btnSair);
     }
 
@@ -58,9 +64,11 @@ public class SideMenuPanel extends JPanel {
         btn.setFocusPainted(false);
         btn.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         btn.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        btn.setOpaque(true);            // ESSENCIAL
+        btn.setContentAreaFilled(true);
     }
 
-    // Getters para que MainWindow possa “ouvir” cliques
+    // Getters para que MainWindow possa "ouvir" cliques
     public JButton getBtnHome() {
         return btnHome;
     }
@@ -72,6 +80,9 @@ public class SideMenuPanel extends JPanel {
     }
     public JButton getBtnConfig() {
         return btnConfig;
+    }
+    public JButton getBtnLogout() {
+        return btnLogout;
     }
     public JButton getBtnSair() {
         return btnSair;

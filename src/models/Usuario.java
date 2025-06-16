@@ -16,17 +16,19 @@ public abstract class Usuario implements Serializable {
     protected String nome;
     protected String email;
     protected String cpf;
+    protected String senha;    // <-- ADICIONADO!
     protected boolean ativo;
 
     // ======= Construtores =======
     /**
      * Construtor completo. Usa-se este quando for criar um usuário com ID explícito.
      */
-    public Usuario(int id, String nome, String email, String cpf) {
+    public Usuario(int id, String nome, String email, String cpf, String senha) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.cpf = cpf;
+        this.senha = senha; // <-- ADICIONADO!
         this.ativo = true;
     }
 
@@ -80,6 +82,13 @@ public abstract class Usuario implements Serializable {
     }
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public String getSenha() {    // <-- ADICIONADO!
+        return senha;
+    }
+    public void setSenha(String senha) {   // <-- ADICIONADO!
+        this.senha = senha;
     }
 
     public boolean isAtivo() {

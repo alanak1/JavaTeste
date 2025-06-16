@@ -7,7 +7,7 @@ import javax.swing.*;
  * StatusBar.java
  *
  * Barra de status fixa na parte inferior da janela:
- * Exibe mensagens de contexto (por exemplo, “Você está em: Home”).
+ * Exibe mensagens de contexto (por exemplo, "Você está em: Home").
  */
 public class StatusBar extends JPanel {
     private JLabel lblStatus;

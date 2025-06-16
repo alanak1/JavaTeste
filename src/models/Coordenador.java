@@ -31,8 +31,8 @@ public class Coordenador extends Usuario {
      * @param cpf   CPF
      * @param curso nome do curso que coordena
      */
-    public Coordenador(int id, String nome, String email, String cpf, String curso) {
-        super(id, nome, email, cpf);
+    public Coordenador(int id, String nome, String email, String cpf, String senha, String areaCoordenacao) {
+        super(id, nome, email, cpf, senha);
         this.curso = curso;
         this.disciplinasGerenciadas = new ArrayList<>();
     }

@@ -83,6 +83,7 @@ public class SerializadorJava {
     /**
      * Leitura do conteúdo da linha de CSV para criar instância de Usuario.
      * Recebe também “novoId” (por ex., size da lista + 1) para atribuir o ID corretamente.
+     * IMPORTANTE: senha não é importada pelo CSV, é definida como padrão ("senha123").
      */
     private Usuario processarLinhaUsuario(String[] campos, int novoId) {
         try {
@@ -91,29 +92,32 @@ public class SerializadorJava {
             String email = campos[2].trim();
             String cpf = campos[3].trim();
 
+            // Senha padrão para todos os usuários importados de CSV
+            String senhaPadrao = "senha123";
+
             switch (tipo) {
                 case "Aluno":
                     // campos[4]=matricula, campos[5]=curso, campos[6]=semestre
                     String matricula = campos[4].trim();
                     String curso = campos[5].trim();
                     int semestre = Integer.parseInt(campos[6].trim());
-                    return new Aluno(novoId, nome, email, cpf, matricula, curso, semestre);
+                    return new Aluno(novoId, nome, email, cpf, senhaPadrao, matricula, curso, semestre);
 
                 case "Professor":
                     // campos[4]=area, campos[5]=titulacao
                     String area = campos[4].trim();
                     String titulacao = campos[5].trim();
-                    return new Professor(novoId, nome, email, cpf, area, titulacao);
+                    return new Professor(novoId, nome, email, cpf, senhaPadrao, area, titulacao);
 
                 case "Administrador":
                     // campos[4]=nivelAcesso
                     String nivel = campos[4].trim();
-                    return new Administrador(novoId, nome, email, cpf, nivel);
+                    return new Administrador(novoId, nome, email, cpf, senhaPadrao, nivel);
 
                 case "Coordenador":
                     // campos[4]=curso
                     String cursoCoord = campos[4].trim();
-                    return new Coordenador(novoId, nome, email, cpf, cursoCoord);
+                    return new Coordenador(novoId, nome, email, cpf, senhaPadrao, cursoCoord);
 
                 default:
                     return null;
@@ -127,13 +131,14 @@ public class SerializadorJava {
     // =====================================================================================
     // 3) Salvar usuários em “usuarios.csv”
     //    → Recebe uma List<Usuario> chamada “usuarios” e percorre-a
+    //    IMPORTANTE: nunca exporta campo senha!
     // =====================================================================================
     public void salvarUsuariosCSV(List<Usuario> usuarios) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(CSV_USUARIOS))) {
             // Cabeçalho
             pw.println("Tipo;ID;Nome;Email;CPF;Extra01;Extra02;Extra03");
 
-            for (Usuario u : usuarios) {  // → usa o parâmetro “usuarios” exatamente
+            for (Usuario u : usuarios) {
                 String tipo = u.getTipoUsuario();
                 int id = u.getId();
                 String nome = u.getNome();
@@ -160,6 +165,7 @@ public class SerializadorJava {
                         break;
                 }
 
+                // Não exporta campo senha!
                 pw.println(
                     String.format("%s;%d;%s;%s;%s;%s",
                                   tipo, id, nome, email, cpf, extra)
@@ -188,7 +194,7 @@ public class SerializadorJava {
 
                 Frequencia f = processarLinhaFrequencia(campos);
                 if (f != null) {
-                    frequencias.add(f);   // → usa o parâmetro “frequencias” exatamente
+                    frequencias.add(f);
                     System.out.println("📥 Frequência importada: " + f.toString());
                 }
             }
@@ -230,7 +236,7 @@ public class SerializadorJava {
         try (PrintWriter pw = new PrintWriter(new FileWriter(CSV_FREQUENCIAS))) {
             pw.println("ID;AlunoMatricula;Disciplina;Data;Presente;RegistradoPor");
 
-            for (Frequencia f : frequencias) {  // → usa o parâmetro “frequencias”
+            for (Frequencia f : frequencias) {
                 pw.println(
                     String.format("%d;%s;%s;%s;%b;%s",
                         f.getId(),

@@ -37,9 +37,8 @@ public class Aluno extends Usuario {
      * @param curso       curso de graduação
      * @param semestre    semestre atual
      */
-    public Aluno(int id, String nome, String email, String cpf,
-                 String matricula, String curso, int semestre) {
-        super(id, nome, email, cpf);
+public Aluno(int id, String nome, String email, String cpf, String senha, String matricula, String curso, int ano) {
+        super(id, nome, email, cpf, senha);
         this.matricula = matricula;
         this.curso = curso;
         this.semestre = semestre;

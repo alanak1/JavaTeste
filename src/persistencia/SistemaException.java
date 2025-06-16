@@ -1,13 +1,11 @@
 package persistencia;
 
-import java.io.Serializable;
-
 /**
  * Exceção customizada para tratar erros de negócio do Sistema.
  * Requisito 11: Exception customizada
  */
-public class SistemaException extends Exception implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class SistemaException extends Exception  {
+    private static final long serialVersionUID = 1;
 
     private String tipoEntidade;
     private String identificador;

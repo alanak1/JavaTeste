@@ -1,5 +1,3 @@
-
-
 import ui.LoginWindow;
 
 /**
@@ -20,9 +18,12 @@ public class TesteCompleto {
         }
 
         // Inicia a aplicação na Event Dispatch Thread
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            LoginWindow loginWindow = new LoginWindow();
-            loginWindow.setVisible(true);
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                LoginWindow loginWindow = new LoginWindow();
+                loginWindow.setVisible(true);
+            }
         });
     }
 }
