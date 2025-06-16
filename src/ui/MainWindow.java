@@ -1,11 +1,10 @@
 package ui;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 import models.Sistema;
 import models.Usuario;
-
 import static ui.UIConfig.*;
 
 public class MainWindow extends JFrame {
@@ -23,39 +22,28 @@ public class MainWindow extends JFrame {
         aplicarTamanhoPadrao(this);
         setLayout(new BorderLayout());
 
-        // Crie o painel central e o menu lateral já passando o usuário
+        // Painel central adaptado ao perfil
         contentPanel = new ContentPanel(sistema, usuarioLogado);
 
-        // Actions dos botões do menu
-        ActionListener homeAction = e -> contentPanel.showCard("HOME");
-        ActionListener usuariosAction = e -> contentPanel.showCard("USUARIOS");
-        ActionListener disciplinasAction = e -> contentPanel.showCard("DISCIPLINAS");
-        ActionListener registrarAction = e -> contentPanel.showCard("REGISTRAR");
-        ActionListener relatorioAction = e -> contentPanel.showCard("RELATORIO");
-        ActionListener configAction = e -> contentPanel.showCard("CONFIG");
-        ActionListener exportarAction = e -> {
+        // Actions (cada ação mostra um card existente, ou exporta/sai)
+        ActionListener homeAction       = e -> contentPanel.showCard("HOME");
+        ActionListener usuariosAction   = e -> contentPanel.showCard("USUARIOS");
+        ActionListener disciplinasAction= e -> contentPanel.showCard("DISCIPLINAS");
+        ActionListener registrarAction  = e -> contentPanel.showCard("REGISTRAR");
+        ActionListener relatorioAction  = e -> contentPanel.showCard("RELATORIO");
+        ActionListener configAction     = e -> contentPanel.showCard("CONFIG");
+        ActionListener exportarAction   = e -> {
             sistema.exportarParaCSV();
             JOptionPane.showMessageDialog(this, "Exportação concluída!");
         };
-        ActionListener sairAction = e -> exitProcedure();
+        ActionListener sairAction       = e -> exitProcedure();
 
-        // Menu lateral dinâmico conforme o usuário
-        sidePanel = new SideMenuPanel(
-            usuarioLogado,
-            homeAction,
-            registrarAction,
-            relatorioAction,
-            configAction,
-            usuariosAction,
-            disciplinasAction,
-            exportarAction,
-            sairAction
-        );
+        // Painel lateral
+        sidePanel = new SideMenuPanel(homeAction, usuariosAction, disciplinasAction, registrarAction, relatorioAction, configAction, sairAction);
 
         add(sidePanel, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
 
-        // Confirma ao sair
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
