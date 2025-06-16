@@ -13,7 +13,8 @@ import models.Usuario;
  * MainWindow.java
  *
  * Janela principal que reúne o "SideMenuPanel" (à esquerda),
- * o "ContentPanel" (no centro, com CardLayout) e a "StatusBar" (na parte inferior).
+ * o "ContentPanel" (no centro, com CardLayout) e a "StatusBar" (na parte
+ * inferior).
  */
 public class MainWindow extends JFrame {
     private final SideMenuPanel sidePanel;
@@ -21,7 +22,7 @@ public class MainWindow extends JFrame {
     private final StatusBar statusBar;
     private final Sistema sistema;
     private final Usuario usuarioLogado;
-    
+
     // Construtor vazio para testes (usa o primeiro usuário como padrão)
     public MainWindow() {
         this(null);
@@ -29,7 +30,7 @@ public class MainWindow extends JFrame {
 
     public MainWindow(Usuario usuarioLogado) {
         super("Sistema de Frequência - " + (usuarioLogado != null ? usuarioLogado.getNome() : "Não logado"));
-        
+
         this.usuarioLogado = usuarioLogado;
         // 1) Inicializa o sistema e carrega dados iniciais
         this.sistema = new Sistema();
@@ -41,18 +42,18 @@ public class MainWindow extends JFrame {
         setLocationRelativeTo(null);
 
         // 3) Cria cada painel e adiciona à BorderLayout
-        sidePanel    = new SideMenuPanel();
+        sidePanel = new SideMenuPanel();
         contentPanel = new ContentPanel(sistema);
-        contentPanel.setUsuarioLogado(usuarioLogado);  // Passa o usuário logado
-        statusBar    = new StatusBar();
+        contentPanel.setUsuarioLogado(usuarioLogado); // Passa o usuário logado
+        statusBar = new StatusBar();
 
-        add(sidePanel,    BorderLayout.WEST);
+        add(sidePanel, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
-        add(statusBar,    BorderLayout.SOUTH);
-        
+        add(statusBar, BorderLayout.SOUTH);
+
         // Atualizar status bar com informações do usuário
-        statusBar.setStatus("Logado como: " + usuarioLogado.getNome() + 
-                          " (" + usuarioLogado.getTipoUsuario() + ")");
+        statusBar.setStatus("Logado como: " + usuarioLogado.getNome() +
+                " (" + usuarioLogado.getTipoUsuario() + ")");
 
         // 4) Intercepta o fechamento para confirmar com o usuário
         addWindowListener(new WindowAdapter() {
@@ -70,7 +71,7 @@ public class MainWindow extends JFrame {
                 statusBar.setStatus("Página Inicial");
             }
         });
-        
+
         sidePanel.getBtnRegistro().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -78,7 +79,7 @@ public class MainWindow extends JFrame {
                 statusBar.setStatus("Registrar Frequência");
             }
         });
-        
+
         sidePanel.getBtnRelatorio().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -86,7 +87,7 @@ public class MainWindow extends JFrame {
                 statusBar.setStatus("Relatório de Usuários");
             }
         });
-        
+
         sidePanel.getBtnConfig().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -94,16 +95,15 @@ public class MainWindow extends JFrame {
                 statusBar.setStatus("Configurações");
             }
         });
-        
+
         sidePanel.getBtnLogout().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int resp = JOptionPane.showConfirmDialog(
-                    MainWindow.this,
-                    "Deseja fazer logout?",
-                    "Confirmação",
-                    JOptionPane.YES_NO_OPTION
-                );
+                        MainWindow.this,
+                        "Deseja fazer logout?",
+                        "Confirmação",
+                        JOptionPane.YES_NO_OPTION);
                 if (resp == JOptionPane.YES_OPTION) {
                     // Salvar estado antes de fazer logout
                     MainWindow.this.dispose();
@@ -116,7 +116,7 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-        
+
         sidePanel.getBtnSair().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -134,18 +134,18 @@ public class MainWindow extends JFrame {
      */
     private void exitProcedure() {
         int resp = JOptionPane.showConfirmDialog(
-            this,
-            "Deseja realmente sair?",
-            "Confirmação",
-            JOptionPane.YES_NO_OPTION
-        );
+                this,
+                "Deseja realmente sair?",
+                "Confirmação",
+                JOptionPane.YES_NO_OPTION);
         if (resp == JOptionPane.YES_OPTION) {
             // Salvar estado antes de sair (serialização)
             try {
-                sistema.salvarUsuarios();     // grava usuarios em "usuarios.dat"
-                sistema.salvarFrequencias();  // grava frequências em "frequencias.dat"
+                sistema.salvarUsuarios(); // grava usuarios em "usuarios.dat"
+                sistema.salvarFrequencias(); // grava frequências em "frequencias.dat"
             } catch (Exception ex) {
-                // caso deseje exibir erro: JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                // caso deseje exibir erro: JOptionPane.showMessageDialog(this, ex.getMessage(),
+                // "Erro", JOptionPane.ERROR_MESSAGE);
             }
             System.exit(0);
         }
