@@ -549,10 +549,10 @@ public class ContentPanel extends JPanel {
         actions.setBackground(Color.WHITE);
 
         if (ehAdministrador()) {
-            JButton btnDemo = criarBotao("Demo Polimorfismo", MOONSTONE, Color.WHITE, MOONSTONE,
+            JButton btnDemo = criarBotao("Permissoes", MOONSTONE, Color.WHITE, MOONSTONE,
                     e -> {
                         sistema.demonstrarPolimorfismo();
-                        JOptionPane.showMessageDialog(panel, "Demonstração executada! Veja o console.");
+                        JOptionPane.showMessageDialog(panel, "Demonstração de permissões executada! Veja o console.");
                     });
             actions.add(btnDemo);
         }
