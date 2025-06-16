@@ -10,7 +10,7 @@ import javax.swing.*;
  * Exibe mensagens de contexto (por exemplo, "Você está em: Home").
  */
 public class StatusBar extends JPanel {
-    private JLabel lblStatus;
+    public JLabel lblStatus;
 
     public StatusBar() {
         setLayout(new BorderLayout());
